@@ -5,6 +5,9 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import static org.quartz.TriggerBuilder.newTrigger;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -24,29 +27,35 @@ public class MySchedule {
 							.startNow()
 							.withSchedule(calendarIntervalSchedule()
 									.withIntervalInSeconds(1)) //每秒执行一次
+							.usingJobData("name", "gql")
 							.build();
 		
 		Trigger trigger2 = newTrigger()
 				.startNow()
 				.withSchedule(calendarIntervalSchedule()
-						.withIntervalInSeconds(1)) 
+						.withIntervalInSeconds(2)) 
+				.usingJobData("name", "gqm")
 				.build();
 		
 		JobDetail job1 = newJob(MyJob.class)
-						.withIdentity("Job001", "001")
-						.usingJobData("name", "gqm")
+						.withIdentity("Job001")
 						.build();
 		
 		JobDetail job2 = newJob(MyJob.class)
 				.withIdentity("Job002", "001")
-				.usingJobData("name", "gql")
 				.build();
 		
 		try {
 			Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-			scheduler.scheduleJob(job1, trigger1);
-			scheduler.scheduleJob(job2, trigger2);
 			scheduler.start();
+			
+			Set<Trigger> set = new HashSet<>();
+			set.add(trigger1);
+			set.add(trigger2);
+			scheduler.scheduleJob(job1, set, true); //一个job配置多个触发器
+			
+//			scheduler.scheduleJob(job1, trigger1);
+//			scheduler.scheduleJob(job2, trigger2);
 			//scheduler.shutdown();
 		} catch (SchedulerException e) {
 			e.printStackTrace();
