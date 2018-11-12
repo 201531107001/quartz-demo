@@ -11,7 +11,7 @@ import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 
 /**
- *  使用  AnnualCalender 来 排除银行节日
+ *  使用  AnnualCalender 来 排除不需要执行的时间
  * @author 清明
  *
  */
