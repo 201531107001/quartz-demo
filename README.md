@@ -154,7 +154,7 @@ public class DoNothingJob implements Job {
 注意，@DisallowConcurrentExecution是对JobDetail实例生效，也就是如果你定义两个JobDetail，引用同一个Job类，是可以并发执行的。
 Job的声明和并发
 关于Job的声明和并发需要说明一下，以下一对注解使用在你的Job类中，可以影响Quartz的行为：
-@DisallowConcurrentExecution : 可以添加到你的任务类中，它会告诉Quartz不要执行多个任务实例。
+@DisallowConcurrentExecution : 可以添加到你的任务类中，它会告诉Quartz不要同时执行多个任务实例。
 注意措辞，在上面的”SalesReportJob”类添加该注解，将会只有一个”SalesReportForJoe”实例在给定的时间执行，但是”SalesReportForMike”是可以执行的。这个约束是基于JobDetail的，而不是基于任务类的。
 @PersistJobDataAfterExecution : 告诉Quartz在任务执行成功完毕之后（没有抛出异常），修改JobDetail的JobDataMap备份，以供下一个任务使用。
 如果你使用了@PersistJobDataAfterExecution 注解的话，强烈建议同时使用@DisallowConcurrentExecution注解，以避免当两个同样的job并发执行的时候产生的存储数据迷惑。
@@ -179,3 +179,7 @@ org.quartz.threadPool.threadCount = 10
 org.quartz.threadPool.threadPriority = 5
 org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread = true
 org.quartz.jobStore.class = org.quartz.simpl.RAMJobStore
+
+
+
+
