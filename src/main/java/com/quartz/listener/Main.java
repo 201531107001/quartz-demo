@@ -32,6 +32,7 @@ public class Main {
 									.withIntervalInSeconds(1)
 									.repeatForever())
 							.build();
+		
 		Trigger trigger2 = newTrigger()
 				.startNow()
 				.withSchedule(simpleSchedule()
